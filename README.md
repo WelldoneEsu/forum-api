@@ -138,7 +138,7 @@ Authorization: Bearer <jwt_token>
 **Create a new thread**
 - 🔐 Requires authentication
 #### Request Body:
-```json
+`json
 {
   "title": "Example Thread",
   "content": "This is the thread body."
