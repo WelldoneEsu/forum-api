@@ -9,6 +9,7 @@ connectDB();
 const authRoutes = require('./routes/authRoutes');
 const threadRoutes = require('./routes/threadRoutes');
 const commentRoutes = require('./routes/commentRoutes');
+const adminRoutes = require('./routes/admin');
 const { graphqlHTTP } = require('express-graphql');
 const schema = require('./graphql/schema');
 const rootValue = require('./graphql/resolvers');
@@ -29,6 +30,8 @@ app.use(express.json());
 app.use('/api/', authRoutes);
 app.use('/threads', threadRoutes);
 app.use('/comments', commentRoutes);
+app.use('/admin', adminRoutes);
+
 app.use('/graphql', graphqlHTTP({
   schema,
   rootValue,

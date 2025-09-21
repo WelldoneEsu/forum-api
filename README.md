@@ -2,7 +2,7 @@
 - forum-api
 
 - ## 📖 Description
-This project extends an existing Forum API by implementing key features to enhance user interaction, content moderation, and API accessibility.
+A RESTful API for a forum application, allowing users to create threads, comment on threads, and vote on threads and comments. The API also includes admin moderation features and a GraphQL endpoint.
 
 ---
 
@@ -28,20 +28,100 @@ This project extends an existing Forum API by implementing key features to enhan
 
 ## Installation
 - 
-git clone https://<yourusername>/forum-api.git
+git clone https://yourusername/forum-api.git
 cd project-folder
+
 npm install
+
 
  ## Usage 
  npm start
 
 
-## Technologies Used
-- Node.js, Express
-- MongoDB + Mongoose
-- JWT Authentication
-- GraphQL (express-graphql, graphql)
-- Postman for API testing
+# Start your server
+npm run dev
+node server.js
+
+
+
+🛠️ Technologies Used
+- Node.js  -	JavaScript runtime for building the server.
+- Express.js - Web framework for handling routes and middleware.
+- MongoDB	NoSQL - database for storing threads, comments, votes.
+- Mongoose -  ODM for MongoDB – schema modeling and DB access.
+- JWT	- JSON Web Tokens for user authentication.
+- Bcrypt - Password hashing (if auth system included).
+- express-graphql	- Middleware for setting up a GraphQL endpoint.
+- GraphQL	- Query language for APIs (bonus feature).
+- Dotenv - Environment variable management.
+- Nodemon	- Development tool for auto-restarting the server.
+- Postman – for testing API endpoints.
+- ESLint + Prettier – for code quality and formatting.
+
+
+
+⚙️ Environment Variables
+## Create a .env file in the root directory with:
+
+- PORT=4000
+- MONGO_URI=mongodb://localhost:27017/forum-api
+- JWT_SECRET=your-secret
+
+
+✅ Deliverables
+✅ Voting system (threads & comments)
+✅ Admin moderation routes
+✅ Updated documentation
+✅ (Bonus) GraphQL endpoint
+
+
+
+📁 Project Structure
+forum-api/
+├── config/
+│   └── db.js                        # MongoDB connection setup
+│
+├── controllers/
+│   ├── adminController.js          # Handles admin moderation actions
+│   ├── authController.js           # Handles login/register (if applicable)
+│   ├── commentController.js        # Handles comment CRUD and voting
+│   └── threadController.js         # Handles thread CRUD and voting
+│
+├── graphql/
+│   ├── schema.js                   # GraphQL schema definitions
+│   └── resolvers.js                # GraphQL resolvers for queries/mutations
+│
+├── middleware/
+│   ├── auth.js                     # Authentication and role-check middleware
+│   └── errorHandler.js             # (Optional) Centralized error handler
+│
+├── models/
+│   ├── Thread.js                   # Thread model schema
+│   ├── Comment.js                  # Comment model schema
+│   ├── Vote.js                     # Vote tracking model
+│   └── User.js                     # User model (for login, roles, etc.)
+│
+├── routes/
+│   ├── admin.js                    # Admin routes (moderation)
+│   ├── comments.js                 # Routes for comment voting
+│   ├── threads.js                  # Routes for thread voting
+│   └── auth.js                     # Auth routes (register/login)
+│
+│
+├── .env                            # Environment variables (e.g. DB URI, JWT secret)
+├── .gitignore                      # Ignore node_modules, .env, etc.
+├── app.js                          # Express app initialization
+├── server.js                       # Main entry – connects DB & starts server
+├── package.json                    # Project metadata, dependencies, scripts
+├── package-lock.json               # Exact version lock for dependencies
+└── README.md                       # 📘 Project documentation
+
+
+## 🔐 Authentication & Authorization
+
+- All voting routes require user authentication.
+- Admin routes are protected using `authorizeRole('admin')` middleware.
+- Example middleware located in `middleware/authMiddleware.js`.
 
 
 
@@ -277,10 +357,10 @@ Welldone Esu
 
 ---
 
-## Fourth commit and Push
+## commit and Push
 
 git add .
-git commit -m "feat: graphql endpoints for threads"
+git commit -m "docs: update README with detailed project structure and setup instructions"
 git push origin -u main
 
 ## 📄 License
