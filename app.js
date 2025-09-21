@@ -1,6 +1,5 @@
 const express = require('express');
 const dotenv = require('dotenv');
-const threadRoutes = require('./routes/threadRoutes')
 const app = express();
 // Load environment variables as early as possible
 dotenv.config();
@@ -8,6 +7,8 @@ dotenv.config();
 const connectDB = require('./config/db');
 connectDB();
 const authRoutes = require('./routes/authRoutes');
+const threadRoutes = require('./routes/threadRoutes');
+const commentRoutes = require('./routes/commentRoutes')
 // Error handler
 const errorHandler = require('./middleware/errorHandler');
 
@@ -24,6 +25,7 @@ app.get('/api/health', (req, res) => {
 app.use(express.json());
 app.use('/api/', authRoutes);
 app.use('/threads', threadRoutes);
+app.use('/comments', commentRoutes);
 
 // ✅ Global error handler
 app.use(errorHandler);

@@ -2,18 +2,22 @@
 - forum-api
 
 - ## 📖 Description
-This module is part of the `forum-api` project and handles all operations related to discussion threads. Users can create, view, and delete threads. Admins have special privileges to remove any thread. Each thread supports nested comments for a fully interactive forum experience.
+This module manages **comments and nested replies** on discussion threads. Users can:
+- Comment on a thread.
+- Reply to existing comments (supports infinite nesting).
+- All actions require authentication via JWT.
 
 ---
 
 
 ## ✨ Features
+- ✅ Add comments to threads
+- ✅ Reply to other comments (nested comments)
+- ✅ JWT-protected routes
+- ✅ Linked to users and threads via Mongoose references
+- 🧠 Efficient schema supporting recursive replies
 
-- ✅ Create new discussion threads
-- ✅ View all threads with user info
-- ✅ View single thread with deeply nested comments
-- ✅ Delete threads (admin-only)
-- 🔒 JWT-based route protection for secure access
+
 
 
 ## Installation
@@ -30,10 +34,9 @@ npm install
 | **Node.js**   | Runtime environment                    |
 | **Express**   | Web framework                          |
 | **MongoDB**   | NoSQL database                         |
-| **Mongoose**  | ODM for MongoDB                        |
-| **JWT**       | Authentication and authorization       |
-| **bcrypt**    | Password hashing                       |
-| **dotenv**    | Environment variable management        |
+| **Mongoose**  | MongoDB ORM                            |
+| **JWT**       | Secure route protection                |
+
 
 
 ## 📘 API Endpoints – Thread Routes
@@ -118,15 +121,70 @@ Response:
 403 Forbidden – Not an admin
 404 Not Found – Thread doesn't exist
 
+📘 API Endpoints – Comment Routes
+
+## 1. Add a Comment to a Thread
+POST /threads/:id/comments
+🔁 Example in Postman
+Method: POST
+URL: http://localhost:4000/threads/<thread_id>/comments
+Headers:
+Authorization: Bearer <your_token>
+Content-Type: application/json
+Body (raw JSON):
+{
+  "content": "This is a comment from Postman!"
+}
+
+✅ Expected Response
+{
+  "_id": "652b...",
+  "content": "This is a comment from Postman!",
+  "author": "651a...",
+  "thread": "6509...",
+  "parentComment": null,
+  "createdAt": "2025-09-21T...",
+  "__v": 0
+}
+
+## 2. Reply to a Comment
+➤ Endpoint
+POST /comments/:id/reply
+🔁 Example in Postman
+Method: POST
+URL: http://localhost:4000/comments/<parent_comment_id>/reply
+Headers:
+Authorization: Bearer <your_token>
+Content-Type: application/json
+Body (raw JSON):
+{
+  "content": "This is a reply to a comment!"
+}
+
+✅ Expected Response
+{
+  "message": "Reply added successfully",
+  "reply": {
+    "_id": "652b...",
+    "content": "This is a reply to a comment!",
+    "author": "651a...",
+    "thread": "6509...",
+    "parentComment": "652a...",
+    "createdAt": "2025-09-21T...",
+    "__v": 0
+  }
+}
+
+
 ## Author
 Welldone Esu 
 
 ---
 
-## Second commit and Push
+## Third commit and Push
 
 git add .
-git commit -m "feat: add thread creation routes"
+git commit -m "feat: Implement nested comments"
 git push origin -u main
 
 ## 📄 License
