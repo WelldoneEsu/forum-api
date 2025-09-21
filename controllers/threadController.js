@@ -17,7 +17,7 @@ exports.createThread = async (req, res) => {
 
 exports.getThreads = async (req, res) => {
   try {
-    const threads = await Thread.find().populate('createBy', 'name');
+    const threads = await Thread.find().populate('author', 'name');
     res.json(threads);
   } catch (err) {
     res.status(500).json({ message: 'Failed to fetch threads', error: err.message });
@@ -27,7 +27,7 @@ exports.getThreads = async (req, res) => {
 exports.getThread = async (req, res) => {
   try {
     const thread = await Thread.findById(req.params.id)
-    .populate('createBy', 'name')
+    .populate('author', 'name')
     .populate({
         path: 'comments',
         populate: {

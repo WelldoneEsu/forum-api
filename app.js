@@ -8,7 +8,10 @@ const connectDB = require('./config/db');
 connectDB();
 const authRoutes = require('./routes/authRoutes');
 const threadRoutes = require('./routes/threadRoutes');
-const commentRoutes = require('./routes/commentRoutes')
+const commentRoutes = require('./routes/commentRoutes');
+const { graphqlHTTP } = require('express-graphql');
+const schema = require('./graphql/schema');
+const rootValue = require('./graphql/resolvers');
 // Error handler
 const errorHandler = require('./middleware/errorHandler');
 
@@ -26,6 +29,11 @@ app.use(express.json());
 app.use('/api/', authRoutes);
 app.use('/threads', threadRoutes);
 app.use('/comments', commentRoutes);
+app.use('/graphql', graphqlHTTP({
+  schema,
+  rootValue,
+  graphiql: true,
+}));
 
 // ✅ Global error handler
 app.use(errorHandler);

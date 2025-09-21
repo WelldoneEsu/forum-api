@@ -2,23 +2,29 @@
 - forum-api
 
 - ## 📖 Description
-This module manages **comments and nested replies** on discussion threads. Users can:
-- Comment on a thread.
-- Reply to existing comments (supports infinite nesting).
-- All actions require authentication via JWT.
+This project extends an existing Forum API by implementing key features to enhance user interaction, content moderation, and API accessibility.
 
 ---
 
 
 ## ✨ Features
-- ✅ Add comments to threads
-- ✅ Reply to other comments (nested comments)
-- ✅ JWT-protected routes
-- ✅ Linked to users and threads via Mongoose references
-- 🧠 Efficient schema supporting recursive replies
+🗳️ Voting System
+- Upvote or downvote threads and comments
+- Prevent duplicate votes by the same user
+- Vote tracking stored per user per post/comment
 
+🛡️ Admin Moderation
+- View all threads
+- Delete inappropriate/spam comments
+- Delete any thread (admin-only access)
+- Role-based access via middleware (roleCheck('admin'))
 
-
+⚡ GraphQL API
+- Query all threads or a single thread with comments
+- Create new threads and comments
+- Reply to existing comments
+- Built using express-graphql
+- GraphiQL playground enabled for testing
 
 ## Installation
 - 
@@ -31,11 +37,11 @@ npm install
 
 
 ## Technologies Used
-| **Node.js**   | Runtime environment                    |
-| **Express**   | Web framework                          |
-| **MongoDB**   | NoSQL database                         |
-| **Mongoose**  | MongoDB ORM                            |
-| **JWT**       | Secure route protection                |
+- Node.js, Express
+- MongoDB + Mongoose
+- JWT Authentication
+- GraphQL (express-graphql, graphql)
+- Postman for API testing
 
 
 
@@ -175,16 +181,106 @@ Body (raw JSON):
   }
 }
 
+🧾 Voting API Endpoints
+Method	Endpoint	Description	Auth Required
+POST	/threads/:id/vote	Upvote/downvote a thread	✅
+POST	/comments/:id/vote	Upvote/downvote a comment	✅
+Example Request:
+POST /threads/613b1c/vote
+Authorization: Bearer <token>
+Content-Type: application/json
+
+{
+  "vote": 1 // or -1
+}
+
+Response:
+
+{
+  "message": "Vote cast successfully"
+}
+
+🛡️ Admin API Endpoints
+Method	Endpoint	Description	Admin Only
+GET	/admin/threads	Get all threads	✅
+DELETE	/admin/comments/:id	Delete a comment	✅
+
+
+⚡ GraphQL Endpoint
+URL	Description
+/graphql	Access GraphQL playground
+✅ Example Queries
+# Get all threads
+query {
+  threads {
+    id
+    title
+    author {
+      name
+    }
+    comments {
+      id
+      text
+    }
+  }
+}
+
+# Get a single thread
+query {
+  thread(id: "6140abc123") {
+    title
+    comments {
+      text
+      author {
+        name
+      }
+    }
+  }
+}
+
+✅ Example Mutations
+# Create thread
+mutation {
+  createThread(title: "New Thread") {
+    id
+    title
+  }
+}
+
+# Create comment
+mutation {
+  createComment(threadId: "6140abc123", text: "This is a comment") {
+    id
+    text
+  }
+}
+
+🧪 GraphiQL is enabled, so you can test your queries at http://localhost:PORT/graphql
+
+🛠️ Setup Instructions (Extra for GraphQL/Voting/Admin)
+# Install GraphQL
+npm install express-graphql graphql
+
+# Start your server
+npm run dev
+node server.js
+
+📂 Related Files
+Feature	Files
+Voting	voteController.js, Vote.js, vote routes
+Admin	adminController.js, adminRoutes.js
+GraphQL	graphql/schema.js, graphql/resolvers.js
+
 
 ## Author
 Welldone Esu 
 
 ---
 
-## Third commit and Push
+## Fourth commit and Push
 
 git add .
-git commit -m "feat: Implement nested comments"
+git commit -m "feat: graphql endpoints for threads"
 git push origin -u main
 
 ## 📄 License

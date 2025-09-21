@@ -1,11 +1,11 @@
 const mongoose = require('mongoose');
 
 const threadSchema = new mongoose.Schema({
-title: { String, required: true },
-content: { String, required: true },
+title: { type: String, required: true },
+content: {type: String, required: true },
 author: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-comments: { type: mongoose.Schema.Types.ObjectId, ref: 'comments' },
-createdBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
+comments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment' }],
+votes: { type: Number, default: 0 }
 });
 
 const Thread = mongoose.model('Thread', threadSchema);
